@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagad Error Screen</title>
+    <style>
+        /* রিসেট ও ফুল স্ক্রিন সেটআপ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* মূল রেড ব্যাকগ্রাউন্ড */
+        .container {
+            width: 100vw;
+            height: 100vh;
+            /* রেডিয়েন্ট ব্যাকগ্রাউন্ড যাতে কেন্দ্রে একটু হালকা লাগে */
+            background: radial-gradient(circle at center, #d31a1f 0%, #a01014 60%, #7e0b0e 100%);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* উপরের ডান কোণার ল্যাঙ্গুয়েজ সুইচার */
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lang-btn {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .lang-switch .divider {
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* সেন্টার টেক্সট (Error Message) */
+        .error-message {
+            color: #fff000; /* হলুদ রং */
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            padding: 0 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* নিচের লোগো সেকশন */
+        .footer-logo {
+            position: absolute;
+            bottom: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* নির্দেশ অনুযায়ী /logo.png ব্যবহার করা হচ্ছে */
+        .logo-img {
+            height: 55px; 
+            width: auto;
+            display: block;
+            /* লোগোটি সাদা বা স্বচ্ছ হলে ভালো দেখাবে */
+            object-fit: contain;
+        }
+
+        /* বাংলা টেক্সট (নিচের ছোট লেখা) */
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        .logo-text .main-name {
+            /* নগদ এর বাংলা ফন্টের স্টাইল */
+            font-family: 'SolaimanLipi', 'Bangla', sans-serif; 
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .logo-text .sub-name {
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+        }
+
+        /* মোবাইলের জন্য রেস্পন্সিভ */
+        @media (max-width: 600px) {
+            .error-message {
+                font-size: 15px;
+            }
+            .logo-text .main-name {
+                font-size: 26px;
+            }
+            .logo-text .sub-name {
+                font-size: 8px;
+            }
+            .logo-img {
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ল্যাঙ্গুয়েজ সুইচার -->
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="switchLang('bn')">বাং</button>
+            <div class="divider"></div>
+            <button class="lang-btn" onclick="switchLang('en')">Eng</button>
+        </div>
+
+        <!-- এরর মেসেজ -->
+        <div class="error-message" id="errorText">
+            Unknown Error. Please call 16167 for more information
+        </div>
+
+        <!-- নিচের লোগো (হুবুহু আপনার দেয়া পাথ ব্যবহার করা হয়েছে) -->
+        <div class="footer-logo">
+            <img src="/logo.png" alt="Nagad Logo" class="logo-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'55\' height=\'55\' viewBox=\'0 0 50 50\'><circle cx=\'25\' cy=\'25\' r=\'22\' fill=\'white\'/><path d=\'M15 25 L25 15 L35 25 L25 35 Z\' fill=\'%23d31a1f\'/></svg>'">
+            
+            <div class="logo-text">
+                <div class="main-name">নগদ</div>
+                <div class="sub-name">আমি বিশ্বাস করি, বিশ্বাস করুন</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // সাধারণ ল্যাঙ্গুয়েজ সুইচ করার ফাংশন (UI এর জন্য)
+        function switchLang(lang) {
+            const btns = document.querySelectorAll('.lang-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            if(lang === 'bn') {
+                btns[0].classList.add('active');
+                // আপনি চাইলে এখানে বাংলা টেক্সট সেট করতে পারেন
+                // document.getElementById('errorText').innerText = "অজানা ত্রুটি। আরও তথ্যের জন্য ১৬১৬৭ নম্বরে কল করুন";
+            } else {
+                btns[1].classList.add('active');
+                document.getElementById('errorText').innerText = "Unknown Error. Please call 16167 for more information";
+            }
+        }
+    </script>
+
+</body>
+</html>
